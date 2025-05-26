@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchNowPlayingMovies } from "../../api/movies";
 import { AppDispatch, RootState } from "../../store";
 import Layout from "../../components/Layout";
+import Slider from "../../components/Home/Slider";
 
 export default function Home() {
   const { movies, loading, error } = useSelector(
@@ -14,27 +15,25 @@ export default function Home() {
     dispatch(fetchNowPlayingMovies(1));
   }, [dispatch]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-salmon-100">
+        <p>Loading...</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-salmon-100">
+        <p>Error: {error}</p>
+      </div>
+    );
 
   return (
     <>
       <Layout>
-        <div className="bg-salmon-100 min-h-screen items-center justify-center">
-          <h1>Welcome to the Home Page</h1>
-          <p>This is the main page of our application.</p>
-          {movies.length > 0 ? (
-            <ul>
-              {movies.map((movie) => (
-                <li key={movie.id}>
-                  <h2>{movie.title}</h2>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No movies available.</p>
-          )}
-        </div>
+        {/* Slider section start */}
+        <Slider movies={movies} />
+        {/* Slider section end */}
       </Layout>
     </>
   );

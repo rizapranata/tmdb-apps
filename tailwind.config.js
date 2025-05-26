@@ -10,13 +10,16 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#14b8a6',
-        secondary: '#64748b',
-        dark: '#0f172a'
+        primary: "#292e35",
+        secondary: "#1e232a",
+        thrd: "#15191f",
+        warning: "#f39c12",
+        success: "#27ae60",
+        text: "#333",
       },
-      screens: {
-        '2xl': '1320px'
-      }
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [],
