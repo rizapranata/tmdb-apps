@@ -1,21 +1,28 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNowPlayingMovies } from "../../api/movies";
+import { fetchNowPlayingMovies, fetchPopularMovies } from "../../api/movies";
 import { AppDispatch, RootState } from "../../store";
 import Layout from "../../components/Layout";
 import Slider from "../../components/Home/Slider";
+import Popular from "../../components/Home/Popular";
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
   const { movies, loading, error } = useSelector(
     (state: RootState) => state.nowPlaying
   );
-  const dispatch = useDispatch<AppDispatch>();
+
+  const { popular, status } = useSelector((state: RootState) => state.popular);
 
   useEffect(() => {
     dispatch(fetchNowPlayingMovies(1));
   }, [dispatch]);
 
-  if (loading)
+  useEffect(() => {
+    dispatch(fetchPopularMovies(1));
+  }, [dispatch]);
+
+  if (loading || status === "loading")
     return (
       <div className="flex justify-center items-center min-h-screen bg-salmon-100">
         <p>Loading...</p>
@@ -31,9 +38,8 @@ export default function Home() {
   return (
     <>
       <Layout>
-        {/* Slider section start */}
         <Slider movies={movies} />
-        {/* Slider section end */}
+        <Popular popular={popular} />
       </Layout>
     </>
   );

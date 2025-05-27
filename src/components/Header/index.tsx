@@ -12,14 +12,14 @@ export default function Header() {
             <div className="flex justify-center items-center">
               <a
                 href="/"
-                className="w-20 h-20 lg:w-24 flex items-center justify-center mr-20"
+                className="w-20 h-20 lg:w-24 flex items-center justify-center md:mr-20"
               >
                 <img src={movieIcon} alt="movie-icon" />
               </a>
               <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
+                <div className="hidden lg:flex items-center space-x-2">
                   <Film size={25} color="grey" />
-                  <span className="hidden lg:flex text-gray-400">
+                  <span className=" text-gray-400">
                     Find Movie
                   </span>
                 </div>
