@@ -19,11 +19,25 @@ function Slider({ movies }: SliderProps) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (containerRef.current) {
-        containerRef.current.scrollBy({
-          left: 300, // jumlah pixel yang digeser
-          behavior: "smooth",
-        });
+      const container = containerRef.current;
+
+      if (container) {
+        const { scrollLeft, scrollWidth, clientWidth } = container;
+        const isEndReached = scrollLeft + clientWidth >= scrollWidth - 1;
+
+        if (isEndReached) {
+          //reset ke awal
+          container.scrollTo({
+            left: 0,
+            behavior: "smooth",
+          });
+        } else {
+          //geser ke kanan
+          container.scrollBy({
+            left: 300, // geser satu layar penuh
+            behavior: "smooth",
+          });
+        }
       }
     }, 3000);
 
@@ -54,7 +68,7 @@ function Slider({ movies }: SliderProps) {
                   />
                 </div>
 
-                <div className="hidden lg:block bg-slate-950 p-5 w-60 md:w-60 lg:w-72 lg:h-60 overflow-x-hidden">
+                <div className="hidden lg:block bg-slate-950 p-5 w-60 md:w-60 lg:w-72 lg:h-72 overflow-x-hidden">
                   <div className="flex items-center gap-2">
                     <Star size={20} className="text-orange-400" />
                     <span className="text-orange-400">
