@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <header className="header">
       <nav className="fixed top-0 w-full left-0 bg-slate-800 z-50">
-        <div className="container mx-auto px-8 lg:px-8">
+        <div className="container mx-auto">
           <div className="flex justify-between items-center h-16">
             <div className="flex justify-center items-center">
               <a

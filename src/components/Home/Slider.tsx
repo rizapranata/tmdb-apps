@@ -46,7 +46,7 @@ function Slider({ movies }: SliderProps) {
 
   const handleDetail = (movieId: number) => {
     console.info(`Show details for movie ID: ${movieId}`);
-  }
+  };
 
   return (
     <div className="bg-primary relative w-full mx-auto py-8">
@@ -76,8 +76,8 @@ function Slider({ movies }: SliderProps) {
                 <div className="hidden lg:block bg-slate-950 p-5 w-60 md:w-60 lg:w-72 lg:h-72 overflow-x-hidden">
                   <div className="flex items-center gap-2">
                     <Star size={20} className="text-orange-400" />
-                    <span className="text-orange-400">
-                      {movie.vote_average}
+                    <span className="text-orange-400 font-semibold">
+                      {Number(movie.vote_average).toFixed(1)}
                     </span>
                   </div>
                   <h3 className="font-semibold mt-2 text-white">
