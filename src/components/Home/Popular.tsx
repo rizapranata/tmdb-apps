@@ -2,12 +2,15 @@ import React from "react";
 import { MoviesItem } from "../../models/moviesModel";
 import { IMAGE_BASE_URL } from "../../constant";
 import { Star } from "lucide-react";
+import CircularProgress from "../CircularProgressbar";
 
 interface PopularProps {
   popular: MoviesItem[];
+  nextPage: () => void;
+  status: string;
 }
 
-function Popular({ popular }: PopularProps) {
+function Popular({ popular, status, nextPage }: PopularProps) {
   return (
     <div className=" bg-secondary">
       <div className="container py-5">
@@ -20,10 +23,10 @@ function Popular({ popular }: PopularProps) {
           </div>
           <div className="hidden lg:flex lg:items-center gap-4">
             <div className="bg-red-400 rounded-full">
-              <p className="text-white p-2">Popularity</p>
+              <p className="text-white p-1">Popularity</p>
             </div>
             <div className="bg-primary rounded-full">
-              <p className="text-white p-2">Release Date</p>
+              <p className="text-white p-1">Release Date</p>
             </div>
           </div>
         </div>
@@ -39,9 +42,10 @@ function Popular({ popular }: PopularProps) {
                   alt={movie.title}
                   className="w-full h-auto rounded"
                 />
-                <div className="absolute top-0 right-0 bg-primary rounded-lg">
+                <div className="flex absolute top-0 right-0 bg-primary rounded-md justify-center items-center">
+                  <Star className="hidden md:block text-orange-400" size={15} />
                   <p className="text-sm font-semibold text-orange-400 p-1">
-                    ⭐{Number(movie.vote_average).toFixed(1)}
+                    {Number(movie.vote_average).toFixed(1)}
                   </p>
                 </div>
               </div>
@@ -53,6 +57,18 @@ function Popular({ popular }: PopularProps) {
               </p>
             </div>
           ))}
+        </div>
+        <div className="flex justify-center m-6">
+          {status !== "loading" ? (
+            <button
+              onClick={nextPage}
+              className="mt-4 text-sm px-2 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+            >
+              Load More
+            </button>
+          ) : (
+            <CircularProgress />
+          )}
         </div>
       </div>
     </div>

@@ -5,27 +5,35 @@ import { AppDispatch, RootState } from "../../store";
 import Layout from "../../components/Layout";
 import Slider from "../../components/Home/Slider";
 import Popular from "../../components/Home/Popular";
+import { nextPage } from "../../features/movie/popularSlice";
+import CircularProgress from "../../components/CircularProgressbar";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const { movies, loading, error } = useSelector(
     (state: RootState) => state.nowPlaying
   );
-
-  const { popular, status } = useSelector((state: RootState) => state.popular);
-
+  const { popular, page, status, total_pages } = useSelector(
+    (state: RootState) => state.popular
+  );
   useEffect(() => {
     dispatch(fetchNowPlayingMovies(1));
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchPopularMovies(1));
-  }, [dispatch]);
+    dispatch(fetchPopularMovies(page));
+  }, [dispatch, page]);
 
-  if (loading || status === "loading")
+  const handleNextPage = () => {
+    if (page < total_pages) {
+      dispatch(nextPage());
+    }
+  };
+
+  if (loading)
     return (
-      <div className="flex justify-center items-center min-h-screen bg-salmon-100">
-        <p>Loading...</p>
+      <div className="flex bg-secondary justify-center items-center min-h-screen bg-salmon-100">
+        <CircularProgress />
       </div>
     );
   if (error)
@@ -39,7 +47,7 @@ export default function Home() {
     <>
       <Layout>
         <Slider movies={movies} />
-        <Popular popular={popular} />
+        <Popular status={status} nextPage={handleNextPage} popular={popular} />
       </Layout>
     </>
   );
