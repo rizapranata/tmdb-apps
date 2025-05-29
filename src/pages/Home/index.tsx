@@ -1,20 +1,24 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { lazy, Suspense, useEffect } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { fetchNowPlayingMovies, fetchPopularMovies } from "../../api/movies";
 import { AppDispatch, RootState } from "../../store";
 import Layout from "../../components/Layout";
-import Slider from "../../components/Home/Slider";
-import Popular from "../../components/Home/Popular";
 import { nextPage } from "../../features/movie/popularSlice";
-import CircularProgress from "../../components/CircularProgressbar";
+import SliderSkeleton from "../../components/Skeletons/SliderSkeleton";
+import PopularSkeleton from "../../components/Skeletons/PopularSkeleton";
+
+const Slider = lazy(() => import("../../components/Home/Slider"));
+const Popular = lazy(() => import("../../components/Home/Popular"));
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const { movies, loading, error } = useSelector(
-    (state: RootState) => state.nowPlaying
+    (state: RootState) => state.nowPlaying,
+    shallowEqual
   );
   const { popular, page, status, total_pages } = useSelector(
-    (state: RootState) => state.popular
+    (state: RootState) => state.popular,
+    shallowEqual
   );
   useEffect(() => {
     dispatch(fetchNowPlayingMovies(1));
@@ -30,24 +34,35 @@ export default function Home() {
     }
   };
 
-  if (loading)
+  if (error) {
     return (
-      <div className="flex bg-secondary justify-center items-center min-h-screen bg-salmon-100">
-        <CircularProgress />
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <p className="text-red-600 font-semibold">Error: {error}</p>
       </div>
     );
-  if (error)
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-salmon-100">
-        <p>Error: {error}</p>
-      </div>
-    );
+  }
 
   return (
     <>
       <Layout>
-        <Slider movies={movies} />
-        <Popular status={status} nextPage={handleNextPage} popular={popular} />
+        {loading && status === "loading" ? (
+          <>
+            <SliderSkeleton />
+            <PopularSkeleton />
+          </>
+        ) : (
+          <Suspense
+            fallback={
+              <>
+                <SliderSkeleton />
+                <PopularSkeleton />
+              </>
+            }
+          >
+            <Slider movies={movies} />
+            <Popular data={{ status, popular }} nextPage={handleNextPage} />
+          </Suspense>
+        )}
       </Layout>
     </>
   );

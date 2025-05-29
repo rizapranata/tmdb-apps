@@ -5,15 +5,17 @@ import { Star } from "lucide-react";
 import CircularProgress from "../CircularProgressbar";
 
 interface PopularProps {
-  popular: MoviesItem[];
   nextPage: () => void;
-  status: string;
+  data: {
+    status: string;
+    popular: MoviesItem[];
+  };
 }
 
-function Popular({ popular, status, nextPage }: PopularProps) {
+function Popular({ data, nextPage }: PopularProps) {
   return (
     <div className=" bg-secondary">
-      <div className="container py-5">
+      <div className="lg:container px-4 py-5">
         <div className="lg:flex lg:items-center lg:justify-between mb-6">
           <div>
             <div className="h-1 w-16 bg-red-400"></div>
@@ -21,17 +23,17 @@ function Popular({ popular, status, nextPage }: PopularProps) {
               Discover Movie
             </h2>
           </div>
-          <div className="hidden lg:flex lg:items-center gap-4">
+          <div className="hidden lg:flex lg:items-center text-sm gap-4">
             <div className="bg-red-400 rounded-full">
-              <p className="text-white p-1">Popularity</p>
+              <p className="text-white px-2">Popularity</p>
             </div>
             <div className="bg-primary rounded-full">
-              <p className="text-white p-1">Release Date</p>
+              <p className="text-white px-2">Release Date</p>
             </div>
           </div>
         </div>
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {popular.map((movie) => (
+          {data.popular.map((movie) => (
             <div
               key={movie.id}
               className="rounded-lg shadow transition-opacity bg-opacity-50 cursor-pointer hover:bg-opacity-75"
@@ -59,7 +61,7 @@ function Popular({ popular, status, nextPage }: PopularProps) {
           ))}
         </div>
         <div className="flex justify-center m-6">
-          {status !== "loading" ? (
+          {data.status !== "loading" ? (
             <button
               onClick={nextPage}
               className="mt-4 text-sm px-2 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
