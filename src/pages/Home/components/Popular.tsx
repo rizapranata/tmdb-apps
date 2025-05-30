@@ -1,9 +1,9 @@
 import React, { memo, useMemo, useState } from "react";
-import { MoviesItem } from "../../models/moviesModel";
+import { MoviesItem } from "../../../models/moviesModel";
 import { MovieCard } from "./MovieCard";
-import DataEmpty from "../DataEmpty";
+import DataEmpty from "../../../components/DataEmpty";
 import { useDispatch } from "react-redux";
-import { setActiveTabAction } from "../../features/movie/popularSlice";
+import { setActiveTabAction } from "../../../features/movie/popularSlice";
 
 interface PopularProps {
   nextPage: () => void;
@@ -32,14 +32,14 @@ function Popular({ data, nextPage }: PopularProps) {
   return (
     <section className="bg-secondary">
       <div className="lg:container px-4 py-5">
-        <header className="lg:flex lg:items-center lg:justify-between mb-6">
+        <header className="flex items-center justify-between mb-6">
           <div>
             <div className="h-1 w-16 bg-red-400" />
             <h2 className="text-base md:text-xl font-bold mb-4 text-white">
               Discover Movie
             </h2>
           </div>
-          <div className="hidden lg:flex gap-4 text-sm cursor-pointer">
+          <div className="text-sm cursor-pointer">
             {["popularity", "releaseDate"].map((tab) => (
               <span
                 key={tab}
@@ -50,7 +50,7 @@ function Popular({ data, nextPage }: PopularProps) {
                   activeTab === tab
                     ? "bg-red-400 hover:bg-red-600"
                     : "bg-primary hover:bg-secondary"
-                }  text-white px-2 py-1 rounded-full`}
+                }  text-white px-2 py-1 rounded-full sm:text-sm mr-1`}
               >
                 {tab === "popularity" ? "Popularity" : "Release Date"}
               </span>

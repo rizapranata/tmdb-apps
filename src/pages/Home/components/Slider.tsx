@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { MoviesItem } from "../../models/moviesModel";
+import { MoviesItem } from "../../../models/moviesModel";
 import MovieSlide from "./MovieSlide";
-import SliderDots from "./SliderDots";
+import SliderDots from "../components/SliderDots";
 
 interface SliderProps {
   movies: MoviesItem[];

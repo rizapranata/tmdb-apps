@@ -9,8 +9,8 @@ import {
 import SliderSkeleton from "../../components/Skeletons/SliderSkeleton";
 import PopularSkeleton from "../../components/Skeletons/PopularSkeleton";
 
-const Slider = lazy(() => import("../../components/Home/Slider"));
-const Popular = lazy(() => import("../../components/Home/Popular"));
+const Slider = lazy(() => import("./components/Slider"));
+const Popular = lazy(() => import("./components/Popular"));
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();

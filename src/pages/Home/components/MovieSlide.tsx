@@ -1,5 +1,5 @@
-import { IMAGE_BASE_URL } from "../../constant";
-import { MoviesItem } from "../../models/moviesModel";
+import { IMAGE_BASE_URL } from "../../../constant";
+import { MoviesItem } from "../../../models/moviesModel";
 import { Star } from "lucide-react";
 
 export default function MovieSlide({ movie }: { movie: MoviesItem }) {

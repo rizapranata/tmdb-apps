@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
-import { IMAGE_BASE_URL } from "../../constant";
-import { MoviesItem } from "../../models/moviesModel";
+import { IMAGE_BASE_URL } from "../../../constant";
+import { MoviesItem } from "../../../models/moviesModel";
 
 export const MovieCard = ({ movie }: { movie: MoviesItem }) => {
   return (
