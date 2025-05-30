@@ -3,7 +3,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { fetchNowPlayingMovies, fetchPopularMovies } from "../../api/movies";
 import { AppDispatch, RootState } from "../../store";
 import Layout from "../../components/Layout";
-import { nextPage } from "../../features/movie/popularSlice";
+import {
+  nextPage,
+} from "../../features/movie/popularSlice";
 import SliderSkeleton from "../../components/Skeletons/SliderSkeleton";
 import PopularSkeleton from "../../components/Skeletons/PopularSkeleton";
 
@@ -16,10 +18,11 @@ export default function Home() {
     (state: RootState) => state.nowPlaying,
     shallowEqual
   );
-  const { popular, page, status, total_pages } = useSelector(
+  const { popular, page, filteredPopular, status, total_pages } = useSelector(
     (state: RootState) => state.popular,
     shallowEqual
   );
+
   useEffect(() => {
     dispatch(fetchNowPlayingMovies(1));
   }, [dispatch]);
@@ -43,27 +46,22 @@ export default function Home() {
   }
 
   return (
-    <>
-      <Layout>
-        {loading && status === "loading" ? (
-          <>
-            <SliderSkeleton />
-            <PopularSkeleton />
-          </>
-        ) : (
-          <Suspense
-            fallback={
-              <>
-                <SliderSkeleton />
-                <PopularSkeleton />
-              </>
-            }
-          >
-            <Slider movies={movies} />
-            <Popular data={{ status, popular }} nextPage={handleNextPage} />
-          </Suspense>
-        )}
-      </Layout>
-    </>
+    <Layout>
+      {loading && status === "loading" ? (
+        <>
+          <SliderSkeleton />
+          <PopularSkeleton />
+        </>
+      ) : (
+        <Suspense fallback={<><SliderSkeleton /><PopularSkeleton /></>}>
+          <Slider movies={movies} />
+          <Popular
+            data={{ status, popular, filteredPopular }}
+            nextPage={handleNextPage}
+          />
+        </Suspense>
+      )}
+    </Layout>
   );
 }
+

@@ -4,6 +4,8 @@ import { fetchPopularMovies } from "../../api/movies";
 
 interface PopularState {
   popular: MoviesItem[];
+  filteredPopular: MoviesItem[];
+  activeTab: "popularity" | "releaseDate";
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   page: number;
@@ -12,10 +14,12 @@ interface PopularState {
 
 const initialState: PopularState = {
   popular: [],
+  filteredPopular: [],
   status: "idle",
   error: null,
   page: 1,
   total_pages: 0,
+  activeTab: "popularity",
 };
 
 const popularSlice = createSlice({
@@ -31,6 +35,19 @@ const popularSlice = createSlice({
     },
     nextPage: (state) => {
       state.page += 1;
+    },
+
+    setActiveTabAction: (state, action) => {
+      state.activeTab = action.payload;
+      if (state.activeTab === "popularity") {
+        state.filteredPopular = state.popular.sort((a, b) =>
+          b.popularity > a.popularity ? 1 : -1
+        );
+      } else {
+        state.filteredPopular = state.popular.sort((a, b) =>
+          b.release_date > a.release_date ? 1 : -1
+        );
+      }
     },
   },
   extraReducers: (builder) => {
@@ -54,5 +71,6 @@ const popularSlice = createSlice({
   },
 });
 
-export const { resetPopular, nextPage } = popularSlice.actions;
+export const { resetPopular, nextPage, setActiveTabAction } =
+  popularSlice.actions;
 export default popularSlice.reducer;

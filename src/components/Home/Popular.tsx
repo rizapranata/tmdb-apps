@@ -1,18 +1,33 @@
-import React, { memo } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { MoviesItem } from "../../models/moviesModel";
-import CircularProgress from "../CircularProgressbar";
 import { MovieCard } from "./MovieCard";
+import DataEmpty from "../DataEmpty";
+import { useDispatch } from "react-redux";
+import { setActiveTabAction } from "../../features/movie/popularSlice";
 
 interface PopularProps {
   nextPage: () => void;
   data: {
     status: string;
     popular: MoviesItem[];
+    filteredPopular: MoviesItem[];
   };
 }
 
 function Popular({ data, nextPage }: PopularProps) {
-  const isLoading = data.status === "loading";
+  const dispatch = useDispatch();
+  const [activeTab, setActiveTabState] = useState<"popularity" | "releaseDate">(
+    "popularity"
+  );
+
+  const handleTabChange = (tab: "popularity" | "releaseDate") => {
+    dispatch(setActiveTabAction(tab));
+    setActiveTabState(tab);
+  };
+
+  const filteredMovies = useMemo(() => {
+    return activeTab === "popularity" ? data.popular : data.filteredPopular;
+  }, [activeTab, data.popular, data.filteredPopular]);
 
   return (
     <section className="bg-secondary">
@@ -24,34 +39,49 @@ function Popular({ data, nextPage }: PopularProps) {
               Discover Movie
             </h2>
           </div>
-          <div className="hidden lg:flex gap-4 text-sm">
-            <span className="bg-red-400 text-white px-2 py-1 rounded-full">
-              Popularity
-            </span>
-            <span className="bg-primary text-white px-2 py-1 rounded-full">
-              Release Date
-            </span>
+          <div className="hidden lg:flex gap-4 text-sm cursor-pointer">
+            {["popularity", "releaseDate"].map((tab) => (
+              <span
+                key={tab}
+                onClick={() =>
+                  handleTabChange(tab as "popularity" | "releaseDate")
+                }
+                className={`${
+                  activeTab === tab
+                    ? "bg-red-400 hover:bg-red-600"
+                    : "bg-primary hover:bg-secondary"
+                }  text-white px-2 py-1 rounded-full`}
+              >
+                {tab === "popularity" ? "Popularity" : "Release Date"}
+              </span>
+            ))}
           </div>
         </header>
 
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {data.popular.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
+        {filteredMovies.length > 0 ? (
+          <>
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {filteredMovies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </div>
 
-        <div className="flex justify-center m-6">
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <button
-              onClick={nextPage}
-              className="mt-4 text-sm px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-            >
-              Load More
-            </button>
-          )}
-        </div>
+            {/* <div className="flex justify-center m-6">
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <button
+                  onClick={nextPage}
+                  className="mt-4 text-sm px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                >
+                  Load More
+                </button>
+              )}
+            </div> */}
+          </>
+        ) : (
+          <DataEmpty />
+        )}
       </div>
     </section>
   );
