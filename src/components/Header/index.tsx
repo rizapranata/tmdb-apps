@@ -2,11 +2,19 @@ import { useState } from "react";
 import movieIcon from "../../assets/images/movie-icon.png";
 import { Film, Search, Video } from "lucide-react";
 
-export default function Header() {
+interface HeaderProps {
+  isOnDetailPage?: boolean;
+}
+
+export default function Header({ isOnDetailPage }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="header">
-      <nav className="fixed top-0 w-full left-0 bg-slate-800 z-50">
+      <nav
+        className={`${
+          isOnDetailPage ? "bg-white/10" : "bg-slate-800"
+        }  fixed top-0 w-full left-0 z-50`}
+      >
         <div className="lg:container px-4 mx-auto">
           <div className="flex justify-between items-center h-16">
             <div className="flex justify-center items-center">
@@ -19,14 +27,14 @@ export default function Header() {
               <div className="flex items-center space-x-4">
                 <div className="hidden lg:flex items-center space-x-2">
                   <Film size={25} color="grey" />
-                  <span className=" text-gray-400">
-                    Find Movie
-                  </span>
+                  <span className=" text-gray-400">Find Movie</span>
                 </div>
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="p-1 bg-slate-500 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md"
+                  className={`${
+                    isOnDetailPage ? "bg-gray-500/50" : "bg-slate-500"
+                  } p-1 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
                 />
                 <div className="cursor-pointer">
                   <Search size={20} color="white" />

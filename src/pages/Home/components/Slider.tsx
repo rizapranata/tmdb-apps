@@ -40,7 +40,7 @@ function Slider({ movies }: SliderProps) {
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        className="flex overflow-x-auto space-x p-4 scrollbar-hide snap-x scroll-smooth"
+        className="flex overflow-x-auto p-4 scrollbar-hide snap-x scroll-smooth"
       >
         {movies.map((movie) => (
           <MovieSlide key={movie.id} movie={movie} />

@@ -1,10 +1,12 @@
 import { Star } from "lucide-react";
 import { IMAGE_BASE_URL } from "../../../constant";
 import { MoviesItem } from "../../../models/moviesModel";
+import { Link } from "react-router-dom";
 
 export const MovieCard = ({ movie }: { movie: MoviesItem }) => {
   return (
-    <div
+    <Link
+      to={`/movie/${movie.id}`}
       key={movie.id}
       className="rounded-lg shadow bg-opacity-50 cursor-pointer hover:bg-opacity-75 transition"
     >
@@ -25,6 +27,6 @@ export const MovieCard = ({ movie }: { movie: MoviesItem }) => {
       <p className="text-sm text-white">
         {movie.release_date?.toString().split("-")[0] ?? "N/A"}
       </p>
-    </div>
+    </Link>
   );
 };
