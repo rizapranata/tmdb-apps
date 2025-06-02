@@ -42,7 +42,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
               </div>
             </div>
             {/* Desktop Menu - Mobile First*/}
-            <div className="hidden md:flex md:text-sm lg:flex lg:text-sm space-x-6 text-white">
+            <div className="hidden md:flex md:text-xs lg:flex lg:text-xs xl:text-sm space-x-6 text-white">
               <div className="flex justify-between gap-1">
                 <Video size={20} color="white" className="hidden lg:flex" />
                 <a href="/">CATEGORIES</a>
@@ -60,7 +60,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden bg-slate-700">
-            <div className="flex flex-col space-y-4 p-4 text-white text-center text-sm">
+            <div className="flex flex-col space-y-4 p-4 text-white text-center text-xs xl:text-base">
               <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 CATEGORIES
               </a>
