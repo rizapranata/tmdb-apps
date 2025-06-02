@@ -34,7 +34,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
                   placeholder="Search..."
                   className={`${
                     isOnDetailPage ? "bg-gray-500/50" : "bg-slate-500"
-                  } p-1 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
+                  } p-1 w-40 md:w-56 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
                 />
                 <div className="cursor-pointer">
                   <Search size={20} color="white" />
