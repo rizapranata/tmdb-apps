@@ -1,13 +1,36 @@
 import { useState } from "react";
 import movieIcon from "../../assets/images/movie-icon.png";
-import { Film, Search, Video } from "lucide-react";
+import { Film, Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../store";
+import { useDispatch } from "react-redux";
+import debounce from "lodash.debounce";
+import { useCallback } from "react";
+import { fetchSearchMovies } from "../../api/movies";
 
 interface HeaderProps {
   isOnDetailPage?: boolean;
 }
 
 export default function Header({ isOnDetailPage }: HeaderProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      if (value.trim() !== "") {
+        dispatch(fetchSearchMovies(value));
+      }
+    }, 800),
+    []
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    debouncedSearch(value);
+  };
+
   return (
     <header className="header">
       <nav
@@ -31,19 +54,18 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
                 </div>
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search movie..."
+                  onChange={handleSearchChange}
+                  onFocus={() => navigation("/search")}
                   className={`${
                     isOnDetailPage ? "bg-gray-500/50" : "bg-slate-500"
-                  } p-1 w-40 md:w-56 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
+                  } p-1 w-52 md:w-64 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
                 />
-                <div className="cursor-pointer">
-                  <Search size={20} color="white" />
-                </div>
               </div>
             </div>
             {/* Desktop Menu - Mobile First*/}
             <div className="hidden md:flex md:text-xs lg:flex lg:text-xs xl:text-sm space-x-6 text-white">
-              <div className="flex justify-between gap-1">
+              <div className="flex justify-between items-center gap-1">
                 <Video size={20} color="white" className="hidden lg:flex" />
                 <a href="/">CATEGORIES</a>
               </div>
@@ -68,10 +90,10 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
               <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 CATEGORIES
               </a>
-              <a href="/top-rated" onClick={() => setIsOpen(!isOpen)}>
+              <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 MOVIES
               </a>
-              <a href="/upcoming" onClick={() => setIsOpen(!isOpen)}>
+              <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 TV SHOWS
               </a>
               <button

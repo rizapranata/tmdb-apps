@@ -49,7 +49,7 @@ export default function DetailMovie() {
         <Banner movieDetail={movieDetail} />
         <MovieStats movieDetail={movieDetail} />
         <Overview overview={movieDetail.overview} />
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center pb-7 lg:py-10">
           {movieVideos
             .filter((v) => v.site === "YouTube" && v.type === "Trailer")
             .slice(0, 1)
