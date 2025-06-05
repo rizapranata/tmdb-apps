@@ -43,8 +43,6 @@ export default function DetailMovie() {
     );
   }
 
-  console.log("movies:", movieVideos);
-
   return (
     <Layout isOnDetailPage={true}>
       <div className="bg-white">

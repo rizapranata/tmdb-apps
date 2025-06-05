@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { IMAGE_BASE_URL } from "../../../constant";
 import { MovieDetail } from "../../../models/movieDetailModel";
 
@@ -16,12 +17,12 @@ export default function Banner({ movieDetail }: Props) {
       <img
         src={IMAGE_BASE_URL + movieDetail.poster_path}
         alt="Movie Poster"
-        className="absolute w-32 -bottom-24 left-5 lg:w-48 2xl:w-72 lg:-bottom-28 xl:-bottom-44 lg:left-20 xl:left-44 2xl:left-64"
+        className="absolute w-32 -bottom-24 left-5 lg:w-48 2xl:w-72 lg:-bottom-40 xl:-bottom-44 lg:left-20 xl:left-44 2xl:left-64"
       />
-      <div className="absolute md:text-nowrap text-white bottom-0 left-40 lg:w-48 lg:left-72 xl:left-96 2xl:left-[570px]">
-        <p>{movieDetail.release_date?.toString()}</p>
+      <div className="absolute md:text-nowrap lg:text-xl text-white bottom-0 left-40 lg:w-48 lg:left-72 xl:left-96 2xl:left-[570px]">
+        <p>{dayjs(movieDetail.release_date).format("MMMM D, YYYY")}</p>
         <h2 className="font-semibold">{movieDetail.title}</h2>
-        <p className="text-sm">{movieDetail.genres?.map((g) => g.name).join(", ")}</p>
+        <p className="">{movieDetail.genres?.map((g) => g.name).join(", ")}</p>
       </div>
     </div>
   );

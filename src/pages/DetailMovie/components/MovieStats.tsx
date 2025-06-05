@@ -7,7 +7,7 @@ type MovieStatsProps = {
 export default function MovieStats({ movieDetail }: MovieStatsProps) {
   return (
     <div className="flex bg-secondary items-center uppercase md:text-sm overflow-y-auto justify-start gap-5 md:gap-12 lg:gap-14 xl:gap-20 pl-40 lg:pl-72 xl:pl-96 2xl:pl-[570px] py-2">
-      <h1 className="text-xl font-bold text-white lg:text-xl">
+      <h1 className="text-sm md:text-xl font-bold text-white lg:text-xl">
         ⭐{Number(movieDetail.vote_average).toFixed(1)}
       </h1>
       <div className="text-white text-sm">

@@ -32,10 +32,10 @@ function Popular({ data, nextPage }: PopularProps) {
   return (
     <section className="bg-secondary">
       <div className="lg:container px-4 py-5">
-        <header className="flex items-center justify-between mb-6">
-          <div>
+        <header className="flex justify-between items-center mb-6">
+          <div className="">
             <div className="h-1 w-16 bg-red-400" />
-            <h2 className="text-base md:text-xl font-bold mb-4 text-white">
+            <h2 className="text-base md:text-xl font-bold text-white">
               Discover Movie
             </h2>
           </div>

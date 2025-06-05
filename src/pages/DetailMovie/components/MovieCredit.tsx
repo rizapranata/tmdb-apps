@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IMAGE_BASE_URL } from "../../../constant";
-import { Cast, MovieCredit } from "../../../models/movieCreditModel";
+import { MovieCredit } from "../../../models/movieCreditModel";
 
 interface MovieCreditProps {
   credit: MovieCredit;
@@ -16,7 +16,7 @@ function MovieCredits({ credit, showAll }: MovieCreditProps) {
     } else {
       setCreditData(credit?.cast.slice(0, 8));
     }
-  }, [showAll]);
+  }, [showAll, credit.cast]);
 
   return (
     <div className="grid grid-cols-4 xl:grid-cols-5 gap-3 py-5">
