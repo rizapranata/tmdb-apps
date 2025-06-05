@@ -6,10 +6,13 @@ import {
   fetchCreditsMovie,
   fetchDetailMovie,
   fetchReviewsMovie,
+  fetchVideosMovie,
 } from "../../api/movies";
+import { Video } from "../../models/movieVideoModel";
 
 interface MovieDetailState {
   movieDetail: MovieDetail;
+  movieVideos: Video[];
   movieReviews: Review[];
   movieCredit: MovieCredit;
   loading: boolean;
@@ -19,6 +22,7 @@ interface MovieDetailState {
 const initialState: MovieDetailState = {
   movieDetail: {} as MovieDetail,
   movieReviews: [] as Review[],
+  movieVideos: [] as Video[],
   movieCredit: {
     id: 0,
     cast: [],
@@ -67,6 +71,18 @@ const movieSearchSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchCreditsMovie.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string | null;
+      })
+      .addCase(fetchVideosMovie.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchVideosMovie.fulfilled, (state, action) => {
+        state.movieVideos = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchVideosMovie.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string | null;
       });

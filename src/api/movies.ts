@@ -104,3 +104,19 @@ export const fetchCreditsMovie = createAsyncThunk(
     }
   }
 );
+
+export const fetchVideosMovie = createAsyncThunk(
+  "video/movie",
+  async (id: number, thunkApi) => {
+    try {
+      const response = await tmdbApi.get(`movie/${id}/videos`, {
+        params: {
+          id,
+        },
+      });
+      return response.data.results;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);

@@ -6,6 +6,7 @@ import {
   fetchCreditsMovie,
   fetchDetailMovie,
   fetchReviewsMovie,
+  fetchVideosMovie,
 } from "../../api/movies";
 import { AppDispatch, RootState } from "../../store";
 import CircularProgress from "../../components/CircularProgressbar";
@@ -15,14 +16,14 @@ import Banner from "./components/Banner";
 import MovieStats from "./components/MovieStats";
 import Overview from "./components/Overview";
 import MovieCredits from "./components/MovieCredit";
+import MovieTrailerButton from "./components/MovieTrailerButton";
 
 export default function DetailMovie() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const [showAllCredit, setShowAllCredit] = useState(false);
-  const { movieDetail, loading, movieReviews, movieCredit } = useSelector(
-    (state: RootState) => state.movieDetail
-  );
+  const { movieDetail, loading, movieReviews, movieCredit, movieVideos } =
+    useSelector((state: RootState) => state.movieDetail);
 
   useEffect(() => {
     dispatch(fetchCreditsMovie(Number(id)));
@@ -31,6 +32,7 @@ export default function DetailMovie() {
   useEffect(() => {
     dispatch(fetchDetailMovie(Number(id)));
     dispatch(fetchReviewsMovie(Number(id)));
+    dispatch(fetchVideosMovie(Number(id)));
   }, [id, dispatch]);
 
   if (loading) {
@@ -41,13 +43,22 @@ export default function DetailMovie() {
     );
   }
 
+  console.log("movies:", movieVideos);
+
   return (
     <Layout isOnDetailPage={true}>
       <div className="bg-white">
         <Banner movieDetail={movieDetail} />
         <MovieStats movieDetail={movieDetail} />
         <Overview overview={movieDetail.overview} />
-
+        <div className="flex justify-center py-10">
+          {movieVideos
+            .filter((v) => v.site === "YouTube" && v.type === "Trailer")
+            .slice(0, 1)
+            .map((video) => (
+              <MovieTrailerButton key={video.id} trailerKey={video.key} />
+            ))}
+        </div>
         {/* Reviews Section */}
         <div className="px-6 md:px-5 pb-10 lg:pt-5 lg:px-20 xl:px-44 xl:pt-10 2xl:px-64">
           <h3 className="text-sm font-semibold text-red-500">REVIEWS</h3>
@@ -67,7 +78,10 @@ export default function DetailMovie() {
           <p className="text-white font-semibold py-5">CREDITS</p>
           <MovieCredits showAll={showAllCredit} credit={movieCredit} />
           <div className="flex pb-6 justify-center">
-            <button className="text-red-400 italic" onClick={() => setShowAllCredit(!showAllCredit)}>
+            <button
+              className="text-red-400 italic"
+              onClick={() => setShowAllCredit(!showAllCredit)}
+            >
               {showAllCredit ? "Show less" : "Show more"}
             </button>
           </div>
