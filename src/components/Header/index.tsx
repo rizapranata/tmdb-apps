@@ -59,7 +59,11 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden bg-slate-700">
+          <div
+            className={`md:hidden ${
+              isOnDetailPage ? "bg-slate-500/40" : "bg-slate-800"
+            }`}
+          >
             <div className="flex flex-col space-y-4 p-4 text-white text-center text-xs xl:text-base">
               <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 CATEGORIES
