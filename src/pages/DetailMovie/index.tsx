@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCreditsMovie,
@@ -19,13 +19,14 @@ import MovieCredits from "./components/MovieCredit";
 export default function DetailMovie() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
+  const [showAllCredit, setShowAllCredit] = useState(false);
   const { movieDetail, loading, movieReviews, movieCredit } = useSelector(
     (state: RootState) => state.movieDetail
   );
 
   useEffect(() => {
     dispatch(fetchCreditsMovie(Number(id)));
-  }, [id,dispatch]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     dispatch(fetchDetailMovie(Number(id)));
@@ -64,7 +65,12 @@ export default function DetailMovie() {
       <div className="bg-secondary">
         <div className="lg:container w-full px-5">
           <p className="text-white font-semibold py-5">CREDITS</p>
-          <MovieCredits credit={movieCredit} />
+          <MovieCredits showAll={showAllCredit} credit={movieCredit} />
+          <div className="flex pb-6 justify-center">
+            <button className="text-red-400 italic" onClick={() => setShowAllCredit(!showAllCredit)}>
+              {showAllCredit ? "Show less" : "Show more"}
+            </button>
+          </div>
         </div>
       </div>
     </Layout>
