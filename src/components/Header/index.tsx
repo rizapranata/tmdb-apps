@@ -21,6 +21,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
     debounce((value: string) => {
       if (value.trim() !== "") {
         dispatch(fetchSearchMovies(value));
+         navigation("/search");
       }
     }, 800),
     []
@@ -56,7 +57,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
                   type="text"
                   placeholder="Search movie..."
                   onChange={handleSearchChange}
-                  onFocus={() => navigation("/search")}
+                  // onFocus={() => navigation("/search")}
                   className={`${
                     isOnDetailPage ? "bg-gray-500/50" : "bg-slate-500"
                   } p-1 w-52 md:w-64 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}

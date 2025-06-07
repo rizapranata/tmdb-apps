@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { MovieCard } from "../Home/components/MovieCard";
 import CircularProgress from "../../components/CircularProgressbar";
+import { Video } from "lucide-react";
 
 function Search() {
-  const { movies, loading } = useSelector(
+  const { movies, loading, } = useSelector(
     (state: RootState) => state.movieSearch
   );
 
@@ -20,12 +21,19 @@ function Search() {
   return (
     <Layout>
       <div className="bg-secondary">
-        <div className="lg:container h-screen overflow-scroll">
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 py-4 px-4 lg:px-0 gap-4">
-            {movies?.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
+        <div className="lg:container h-screen overflow-scroll scrollbar-hide">
+          {movies?.length !== 0 ? (
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 py-4 px-4 lg:px-0 gap-4">
+              {movies?.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col h-screen justify-center items-center">
+              <Video size={40} className="text-gray-300" />
+              <h2 className="text-gray-300">Search Movie</h2>
+            </div>
+          )}
         </div>
       </div>
     </Layout>

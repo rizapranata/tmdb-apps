@@ -18,9 +18,9 @@ const movieSearchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    handleQuerySearch: () => {
-      
-    }
+    resetMovies: (state) => {
+      state.movies = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -39,4 +39,5 @@ const movieSearchSlice = createSlice({
   },
 });
 
+export const { resetMovies } = movieSearchSlice.actions;
 export default movieSearchSlice.reducer;
