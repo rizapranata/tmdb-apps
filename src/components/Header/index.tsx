@@ -68,7 +68,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
             <div className="hidden md:flex md:text-xs lg:flex lg:text-xs xl:text-sm space-x-6 text-white">
               <div className="flex justify-between items-center gap-1">
                 <Video size={20} color="white" className="hidden lg:flex" />
-                <a href="/">CATEGORIES</a>
+                <a href="/categories">CATEGORIES</a>
               </div>
               <a href="/">MOVIES</a>
               <a href="/">TV SHOWS</a>
@@ -88,7 +88,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
             }`}
           >
             <div className="flex flex-col space-y-4 p-4 text-white text-center text-xs xl:text-base">
-              <a href="/" onClick={() => setIsOpen(!isOpen)}>
+              <a href="/categories" onClick={() => setIsOpen(!isOpen)}>
                 CATEGORIES
               </a>
               <a href="/" onClick={() => setIsOpen(!isOpen)}>
