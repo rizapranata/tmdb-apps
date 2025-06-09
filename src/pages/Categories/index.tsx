@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import { AppDispatch, RootState } from "../../store";
 import { fetchGenresMovie, fetchPopularMovies } from "../../api/movies";
-import CircularProgress from "../../components/CircularProgressbar";
-import { MovieCard } from "../Home/components/MovieCard";
 import { nextPage } from "../../features/movie/popularSlice";
 import { Genre } from "../../models/movieGenreModel";
 import Expand from "../../components/Expand";
@@ -13,6 +11,16 @@ import GenreFilter from "./components/GenreFilter";
 import SortSelector from "./components/SortSelector";
 import MovieGrid from "./components/MovieGrid";
 import LoadMoreButton from "./components/LoadMoreButton";
+
+export function removeDuplicatesBy<T>(
+  array: T[],
+  keyFn: (item: T) => any
+): T[] {
+  return array.filter(
+    (item, index, self) =>
+      index === self.findIndex((t) => keyFn(t) === keyFn(item))
+  );
+}
 
 function Categories() {
   const dispatch = useDispatch<AppDispatch>();
@@ -52,7 +60,8 @@ function Categories() {
   }, [popular, selectedGenres]);
 
   const sortedMovies = useMemo(() => {
-    return [...filteredMovies].sort((a, b) => {
+    const uniqueMovies = removeDuplicatesBy(filteredMovies, (m) => m.id);
+    return [...uniqueMovies].sort((a, b) => {
       switch (sortBy) {
         case SortOptions.POPULARITY_ASC:
           return a.popularity - b.popularity;
