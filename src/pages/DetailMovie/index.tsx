@@ -58,16 +58,18 @@ export default function DetailMovie() {
             ))}
         </div>
         {/* Reviews Section */}
-        <div className="px-6 md:px-5 pb-10 lg:pt-5 lg:px-20 xl:px-44 xl:pt-10 2xl:px-64">
-          <h3 className="text-sm font-semibold text-red-500">REVIEWS</h3>
-          <div className="gap-5 mt-4 overflow-y-auto lg:flex lg:overflow-x-auto scroll-smooth">
-            {movieReviews.length > 0 ? (
-              movieReviews.map((review) => (
-                <ReviewCard key={review.id} content={review} />
-              ))
-            ) : (
-              <DataEmpty />
-            )}
+        <div className="lg:container">
+          <div className="px-5 pb-10 lg:pt-5 xl:pt-10">
+            <h3 className="text-sm font-semibold text-red-500">REVIEWS</h3>
+            <div className="gap-5 mt-4 overflow-y-auto lg:flex lg:overflow-x-auto scroll-smooth">
+              {movieReviews.length > 0 ? (
+                movieReviews.map((review) => (
+                  <ReviewCard key={review.id} content={review} />
+                ))
+              ) : (
+                <DataEmpty />
+              )}
+            </div>
           </div>
         </div>
       </div>

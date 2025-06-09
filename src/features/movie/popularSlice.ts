@@ -1,6 +1,7 @@
 import { MoviesItem } from "../../models/moviesModel";
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPopularMovies } from "../../api/movies";
+import { fetchGenresMovie, fetchPopularMovies } from "../../api/movies";
+import { Genre, GenreModel } from "../../models/movieGenreModel";
 
 interface PopularState {
   popular: MoviesItem[];
@@ -9,6 +10,7 @@ interface PopularState {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   page: number;
+  genres: Genre[];
   total_pages: number;
 }
 
@@ -18,6 +20,7 @@ const initialState: PopularState = {
   status: "idle",
   error: null,
   page: 1,
+  genres: [],
   total_pages: 0,
   activeTab: "popularity",
 };
@@ -67,6 +70,17 @@ const popularSlice = createSlice({
       .addCase(fetchPopularMovies.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch popular movies";
+      })
+      .addCase(fetchGenresMovie.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchGenresMovie.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.genres = action.payload.genres;
+      })
+      .addCase(fetchGenresMovie.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "Failed to fetch genres movies";
       });
   },
 });
