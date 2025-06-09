@@ -9,7 +9,7 @@ const Expand = ({ title, children }: ExpandProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="">
+    <div className="w-full">
       <button
         className="w-full rounded-sm text-left px-4 py-1 bg-slate-500 hover:bg-gray-400 font-semibold flex justify-between items-center"
         onClick={() => setIsOpen(!isOpen)}

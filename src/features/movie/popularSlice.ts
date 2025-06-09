@@ -1,7 +1,7 @@
 import { MoviesItem } from "../../models/moviesModel";
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchGenresMovie, fetchPopularMovies } from "../../api/movies";
-import { Genre, GenreModel } from "../../models/movieGenreModel";
+import { Genre } from "../../models/movieGenreModel";
 
 interface PopularState {
   popular: MoviesItem[];

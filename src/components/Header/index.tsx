@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import movieIcon from "../../assets/images/movie-icon.png";
 import { Film, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 export default function Header({ isOnDetailPage }: HeaderProps) {
-  const { page, query } = useSelector((state: RootState) => state.movieSearch);
+  const { query } = useSelector((state: RootState) => state.movieSearch);
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
