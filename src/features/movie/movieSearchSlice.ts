@@ -4,12 +4,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface MovieSearchState {
   movies: MoviesItem[];
+  page: number;
+  query: string;
+  total_pages: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: MovieSearchState = {
   movies: [] as MoviesItem[],
+  page: 1,
+  query: "",
+  total_pages: 0,
   loading: false,
   error: null,
 };
@@ -18,9 +24,19 @@ const movieSearchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    handleQuerySearch: () => {
-      
-    }
+    resetMovies: (state) => {
+      state.movies = [];
+    },
+    nextPage: (state) => {
+      state.page += 1;
+    },
+    setQuery: (state, action) => {
+      state.query = action.payload;
+      state.page = 1;
+    },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -30,7 +46,11 @@ const movieSearchSlice = createSlice({
       })
       .addCase(fetchSearchMovies.fulfilled, (state, action) => {
         state.loading = false;
-        state.movies = action.payload;
+        state.movies =
+          state.page === 1
+            ? action.payload.results
+            : [...state.movies, ...action.payload.results];
+        state.total_pages = action.payload.total_pages;
       })
       .addCase(fetchSearchMovies.rejected, (state, action) => {
         state.loading = false;
@@ -39,4 +59,5 @@ const movieSearchSlice = createSlice({
   },
 });
 
+export const { resetMovies, nextPage, setQuery, setPage } = movieSearchSlice.actions;
 export default movieSearchSlice.reducer;

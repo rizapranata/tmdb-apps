@@ -1,14 +1,17 @@
 import { MoviesItem } from "../../models/moviesModel";
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPopularMovies } from "../../api/movies";
+import { fetchGenresMovie, fetchPopularMovies } from "../../api/movies";
+import { Genre } from "../../models/movieGenreModel";
 
 interface PopularState {
   popular: MoviesItem[];
   filteredPopular: MoviesItem[];
   activeTab: "popularity" | "releaseDate";
   status: "idle" | "loading" | "succeeded" | "failed";
+  loading: boolean;
   error: string | null;
   page: number;
+  genres: Genre[];
   total_pages: number;
 }
 
@@ -16,8 +19,10 @@ const initialState: PopularState = {
   popular: [],
   filteredPopular: [],
   status: "idle",
+  loading: false,
   error: null,
   page: 1,
+  genres: [],
   total_pages: 0,
   activeTab: "popularity",
 };
@@ -54,9 +59,11 @@ const popularSlice = createSlice({
     builder
       .addCase(fetchPopularMovies.pending, (state) => {
         state.status = "loading";
+        state.loading = true;
       })
       .addCase(fetchPopularMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
+        state.loading = false;
         state.popular =
           state.page === 1
             ? action.payload.results
@@ -66,7 +73,22 @@ const popularSlice = createSlice({
       })
       .addCase(fetchPopularMovies.rejected, (state, action) => {
         state.status = "failed";
+        state.loading = false;
         state.error = action.error.message || "Failed to fetch popular movies";
+      })
+      .addCase(fetchGenresMovie.pending, (state) => {
+        state.status = "loading";
+        state.loading = true;
+      })
+      .addCase(fetchGenresMovie.fulfilled, (state, action) => {
+        state.loading = false;
+        state.status = "succeeded";
+        state.genres = action.payload.genres;
+      })
+      .addCase(fetchGenresMovie.rejected, (state, action) => {
+        state.loading = false;
+        state.status = "failed";
+        state.error = action.error.message || "Failed to fetch genres movies";
       });
   },
 });

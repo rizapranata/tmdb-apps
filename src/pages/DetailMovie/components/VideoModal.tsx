@@ -23,7 +23,7 @@ export default function VideoModal({ videoKey, isOpen, onClose }: VideoModalProp
           ></iframe>
         </div>
         <button
-          className="absolute top-2 right-2 bg-white text-black font-bold px-3 py-1 rounded-full shadow hover:bg-gray-200"
+          className="absolute top-2 right-2 bg-white text-black font-bold px-[8px] py-[3px] rounded-full shadow hover:bg-gray-200"
           onClick={onClose}
         >
           ✕

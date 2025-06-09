@@ -2,25 +2,28 @@ import { useState } from "react";
 import movieIcon from "../../assets/images/movie-icon.png";
 import { Film, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { AppDispatch } from "../../store";
-import { useDispatch } from "react-redux";
+import type { AppDispatch, RootState } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash.debounce";
 import { useCallback } from "react";
 import { fetchSearchMovies } from "../../api/movies";
+import { resetMovies, setQuery } from "../../features/movie/movieSearchSlice";
 
 interface HeaderProps {
   isOnDetailPage?: boolean;
 }
 
 export default function Header({ isOnDetailPage }: HeaderProps) {
+  const { query } = useSelector((state: RootState) => state.movieSearch);
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const debouncedSearch = useCallback(
-    debounce((value: string) => {
+    debounce((value: string, pageNum: number) => {
       if (value.trim() !== "") {
-        dispatch(fetchSearchMovies(value));
+        dispatch(fetchSearchMovies({ query: value, page: pageNum }));
+        navigation("/search");
       }
     }, 800),
     []
@@ -28,7 +31,14 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    debouncedSearch(value);
+    dispatch(setQuery(value));
+    debouncedSearch(value, 1);
+  };
+
+  const handleResetSearch = () => {
+    dispatch(resetMovies());
+    dispatch(setQuery(""));
+    navigation("/");
   };
 
   return (
@@ -54,20 +64,28 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
                 </div>
                 <input
                   type="text"
+                  value={query}
                   placeholder="Search movie..."
                   onChange={handleSearchChange}
-                  onFocus={() => navigation("/search")}
                   className={`${
                     isOnDetailPage ? "bg-gray-500/50" : "bg-slate-500"
                   } p-1 w-52 md:w-64 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
                 />
+                {query && (
+                  <button
+                    onClick={handleResetSearch}
+                    className="text-white text-sm px-1 py-1 rounded"
+                  >
+                    ❌
+                  </button>
+                )}
               </div>
             </div>
             {/* Desktop Menu - Mobile First*/}
             <div className="hidden md:flex md:text-xs lg:flex lg:text-xs xl:text-sm space-x-6 text-white">
               <div className="flex justify-between items-center gap-1">
                 <Video size={20} color="white" className="hidden lg:flex" />
-                <a href="/">CATEGORIES</a>
+                <a href="/categories">CATEGORIES</a>
               </div>
               <a href="/">MOVIES</a>
               <a href="/">TV SHOWS</a>
@@ -87,7 +105,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
             }`}
           >
             <div className="flex flex-col space-y-4 p-4 text-white text-center text-xs xl:text-base">
-              <a href="/" onClick={() => setIsOpen(!isOpen)}>
+              <a href="/categories" onClick={() => setIsOpen(!isOpen)}>
                 CATEGORIES
               </a>
               <a href="/" onClick={() => setIsOpen(!isOpen)}>

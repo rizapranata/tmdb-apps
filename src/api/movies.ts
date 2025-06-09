@@ -59,14 +59,18 @@ export const fetchDetailMovie = createAsyncThunk(
 
 export const fetchSearchMovies = createAsyncThunk(
   "movies/fetch",
-  async (query: string, thunkApi) => {
+  async ({ query, page }: { query: string; page: number }, thunkApi) => {
     try {
       const response = await tmdbApi.get(`/search/movie`, {
         params: {
           query,
+          page
         },
       });
-      return response.data.results;
+      return {
+        results: response.data.results,
+        total_pages: response.data.total_pages
+      };
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.response.data);
     }
@@ -115,6 +119,22 @@ export const fetchVideosMovie = createAsyncThunk(
         },
       });
       return response.data.results;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchGenresMovie = createAsyncThunk(
+  "genres/movie",
+  async (_, thunkApi) => {
+    try {
+      const response = await tmdbApi.get(`genre/movie/list`, {
+        params: {
+          language: "en-US",
+        },
+      });
+      return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.response.data);
     }
