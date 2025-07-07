@@ -26,7 +26,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
         navigation("/search");
       }
     }, 800),
-    []
+    [dispatch, navigation]
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

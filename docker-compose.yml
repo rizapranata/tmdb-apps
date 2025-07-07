@@ -1,11 +1,16 @@
-version: '3'
+version: '3.8'
+
 services:
-  react-app:
-    build: .
+  react-frontend:
+    container_name: tmdb-app      # Nama container custom
+    build:
+      context: .                            # Path ke project (Dockerfile)
+      dockerfile: Dockerfile
+    image: ${IMAGE_NAME}:${IMAGE_TAG}    # Nama image custom
     ports:
-      - "3000:3000"  # untuk development
+      - "3000:3000"                         # Host:Container
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/app                              # Bind mount kode
+      - /app/node_modules                   # Hindari node_modules overwrite
     stdin_open: true
     tty: true
