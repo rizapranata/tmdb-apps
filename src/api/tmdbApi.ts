@@ -10,30 +10,23 @@ const tmdbApi = axios.create({
 });
 
 tmdbApi.interceptors.request.use(
-  async (config) => {
-    // const token = await AsyncStorage.getItem('token'); // React Native
-    // const token = localStorage.getItem("token"); // React Web
-    const token = `${configEnv.access_token}`; // React Web
+  (config) => {
+    const token = configEnv.access_token; // Bearer Token TMDB
+    const sessionId = localStorage.getItem("session_id"); // Ambil dari storage
 
     config.params = {
       ...(config.params || {}),
       api_key: `${configEnv.api_key}`,
+      ...(sessionId ? { session_id: sessionId } : {}),
     };
 
     if (token) {
       config.headers.Authorization = `${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
-);
-
-tmdbApi.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.log("api error", error);
-    return Promise.reject(error);
-  }
 );
 
 export default tmdbApi;

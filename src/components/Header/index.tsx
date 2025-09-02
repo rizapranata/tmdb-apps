@@ -89,6 +89,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
               </div>
               <a href="/">MOVIES</a>
               <a href="/">TV SHOWS</a>
+              <a href="/login">LOGIN</a>
             </div>
             {/* Button Mobile */}
             <div className="md:hidden text-white text-xl">
@@ -113,6 +114,9 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
               </a>
               <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 TV SHOWS
+              </a>
+              <a href="/login" onClick={() => setIsOpen(!isOpen)}>
+                LOGIN
               </a>
               <button
                 onClick={() => setIsOpen(false)}

@@ -4,6 +4,7 @@ import popularReducer from "../features/movie/popularSlice";
 import nowPlayingReducer from "../features/movie/nowPlayingSlice";
 import movieDetailReducer from "../features/movie/movieDetailSlice";
 import movieSearchReducer from "../features/movie/movieSearchSlice";
+import authReducer from "../features/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     popular: popularReducer,
     movieDetail: movieDetailReducer,
     nowPlaying: nowPlayingReducer,
-    movieSearch: movieSearchReducer
+    movieSearch: movieSearchReducer,
+    auth: authReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });
