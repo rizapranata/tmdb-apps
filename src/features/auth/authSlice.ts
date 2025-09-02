@@ -82,10 +82,20 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-  localStorage.removeItem("session_id");
-  return { sessionId: null, accountId: null };
-});
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (sessionId: string, { rejectWithValue }) => {
+    try {
+      await tmdbApi.delete("/authentication/session", {
+        data: { session_id: sessionId },
+      });
+      localStorage.removeItem("session_id");
+      return true;
+    } catch (error: any) {
+      return rejectWithValue("Logout failed");
+    }
+  }
+);
 
 // Slice
 const authSlice = createSlice({

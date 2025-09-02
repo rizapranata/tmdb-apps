@@ -8,16 +8,21 @@ import debounce from "lodash.debounce";
 import { useCallback } from "react";
 import { fetchSearchMovies } from "../../api/movies";
 import { resetMovies, setQuery } from "../../features/movie/movieSearchSlice";
-
+import { logout } from "../../features/auth/authSlice";
+import ConfirmationModal from "../Modal/ConfirmationModal";
 interface HeaderProps {
   isOnDetailPage?: boolean;
 }
 
 export default function Header({ isOnDetailPage }: HeaderProps) {
   const { query } = useSelector((state: RootState) => state.movieSearch);
+  const { isAuthenticated, sessionId } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const debouncedSearch = useCallback(
     debounce((value: string, pageNum: number) => {
@@ -39,6 +44,18 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
     dispatch(resetMovies());
     dispatch(setQuery(""));
     navigation("/");
+  };
+
+  const confirmLogout = () => {
+    if (sessionId) {
+      dispatch(logout(sessionId));
+    }
+    console.log("Confirmed!");
+    setOpen(false);
+  };
+
+  const handleLogout = () => {
+    setOpen(true);
   };
 
   return (
@@ -84,12 +101,16 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
             {/* Desktop Menu - Mobile First*/}
             <div className="hidden md:flex md:text-xs lg:flex lg:text-xs xl:text-sm space-x-6 text-white">
               <div className="flex justify-between items-center gap-1">
-                <Video size={20} color="white" className="hidden lg:flex" />
+                <Video size={20} color={isAuthenticated ? "red" : "white"} className="hidden lg:flex" />
                 <a href="/categories">CATEGORIES</a>
               </div>
               <a href="/">MOVIES</a>
               <a href="/">TV SHOWS</a>
-              <a href="/login">LOGIN</a>
+              {isAuthenticated ? (
+                <button onClick={handleLogout}>LOGOUT</button>
+              ) : (
+                <a href="/login">LOGIN</a>
+              )}
             </div>
             {/* Button Mobile */}
             <div className="md:hidden text-white text-xl">
@@ -127,6 +148,14 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
             </div>
           </div>
         )}
+
+        <ConfirmationModal
+          isOpen={open}
+          title="Logout!"
+          message="Are you sure you want to logout?"
+          onCancel={() => setOpen(false)}
+          onConfirm={confirmLogout}
+        />
       </nav>
     </header>
   );
