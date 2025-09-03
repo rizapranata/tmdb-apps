@@ -2,9 +2,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import tmdbApi from "../../api/tmdbApi";
 
-const savedSessionId = localStorage.getItem("session_id");
-
-// Types
 interface Account {
   id: number;
   username: string;
@@ -26,10 +23,14 @@ interface AuthState {
   error: string | null;
 }
 
+// 🔥 Restore state dari localStorage
+const storedSession = localStorage.getItem("session_id");
+const storedAccount = localStorage.getItem("account");
+
 const initialState: AuthState = {
-  isAuthenticated: false,
-  sessionId: savedSessionId || null,
-  account: null,
+  isAuthenticated: !!storedSession,
+  sessionId: storedSession || null,
+  account: storedAccount ? JSON.parse(storedAccount) : null,
   loading: false,
   error: null,
 };
@@ -89,7 +90,6 @@ export const logout = createAsyncThunk(
       await tmdbApi.delete("/authentication/session", {
         data: { session_id: sessionId },
       });
-      localStorage.removeItem("session_id");
       return true;
     } catch (error: any) {
       return rejectWithValue("Logout failed");
@@ -108,10 +108,13 @@ const authSlice = createSlice({
       state.account = null;
       state.loading = false;
       state.error = null;
+      // 🧹 bersihkan localStorage juga
+      localStorage.removeItem("session_id");
+      localStorage.removeItem("account");
     },
   },
   extraReducers: (builder) => {
-    // Login
+    // 🔐 Login
     builder.addCase(login.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -126,20 +129,31 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.sessionId = action.payload.sessionId;
         state.account = action.payload.account;
+
+        // simpan ke localStorage
+        localStorage.setItem("session_id", action.payload.sessionId);
+        localStorage.setItem("account", JSON.stringify(action.payload.account));
       }
     );
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
+      state.isAuthenticated = false;
     });
 
-    // Logout
+    // 🚪 Logout
     builder.addCase(logout.fulfilled, (state) => {
       state.isAuthenticated = false;
       state.sessionId = null;
       state.account = null;
+      state.loading = false;
+      state.error = null;
+      // bersihkan localStorage
+      localStorage.removeItem("session_id");
+      localStorage.removeItem("account");
     });
     builder.addCase(logout.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.payload as string;
     });
   },

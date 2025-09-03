@@ -8,7 +8,7 @@ import debounce from "lodash.debounce";
 import { useCallback } from "react";
 import { fetchSearchMovies } from "../../api/movies";
 import { resetMovies, setQuery } from "../../features/movie/movieSearchSlice";
-import { logout } from "../../features/auth/authSlice";
+import { logout, resetAuth } from "../../features/auth/authSlice";
 import ConfirmationModal from "../Modal/ConfirmationModal";
 interface HeaderProps {
   isOnDetailPage?: boolean;
@@ -33,7 +33,6 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
     }, 800),
     [dispatch, navigation]
   );
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setQuery(value));
@@ -50,7 +49,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
     if (sessionId) {
       dispatch(logout(sessionId));
     }
-    console.log("Confirmed!");
+    dispatch(resetAuth());
     setOpen(false);
   };
 
@@ -101,7 +100,11 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
             {/* Desktop Menu - Mobile First*/}
             <div className="hidden md:flex md:text-xs lg:flex lg:text-xs xl:text-sm space-x-6 text-white">
               <div className="flex justify-between items-center gap-1">
-                <Video size={20} color={isAuthenticated ? "red" : "white"} className="hidden lg:flex" />
+                <Video
+                  size={20}
+                  color={isAuthenticated ? "red" : "white"}
+                  className="hidden lg:flex"
+                />
                 <a href="/categories">CATEGORIES</a>
               </div>
               <a href="/">MOVIES</a>
@@ -136,9 +139,13 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
               <a href="/" onClick={() => setIsOpen(!isOpen)}>
                 TV SHOWS
               </a>
-              <a href="/login" onClick={() => setIsOpen(!isOpen)}>
-                LOGIN
-              </a>
+              {isAuthenticated ? (
+                <button onClick={handleLogout}>LOGOUT</button>
+              ) : (
+                <a href="/login" onClick={() => setIsOpen(!isOpen)}>
+                  LOGIN
+                </a>
+              )}
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-2 text-red-500"

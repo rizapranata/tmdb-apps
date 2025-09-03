@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
 import { login } from "../../features/auth/authSlice";
@@ -14,14 +14,16 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
+  useEffect(() => {
+    if (isAuthenticated && account) {
+      navigate("/");
+    }
+  }, [isAuthenticated, account, navigate]);
 
   const handleLogin = () => {
-    dispatch(login({ username, password }))
+    dispatch(login({ username, password }));
   };
-
-  if (isAuthenticated && account) {
-    navigate("/");
-  }
 
   return (
     <div className="place-content-center min-h-screen bg-zinc-700">
@@ -63,7 +65,12 @@ const LoginForm = () => {
           </p>
         )}
         <div className="mt-3">
-          <button className="text-gray-400 text-sm" onClick={() => navigate("/")}>Cancel</button>
+          <button
+            className="text-gray-400 text-sm"   
+            onClick={() => navigate("/")}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

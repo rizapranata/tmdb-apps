@@ -18,7 +18,7 @@ export default function GenreFilter({
       {genres?.map((genre) => (
         <label
           key={genre.id}
-          className="flex items-center flex-row-reverse lg:justify-between md:justify-items-end lg:mb-2 ml-2 gap-1"
+          className="flex items-center flex-row-reverse lg:justify-between md:justify-items-end lg:mb-2 ml-2 lg:gap-7 gap-1"
         >
           <input
             type="checkbox"
