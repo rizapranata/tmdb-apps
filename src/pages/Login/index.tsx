@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
-import { login } from "../../features/auth/authSlice";
 import movieIcon from "../../assets/images/movie-icon.png";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/auth";
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();

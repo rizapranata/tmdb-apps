@@ -8,8 +8,9 @@ import debounce from "lodash.debounce";
 import { useCallback } from "react";
 import { fetchSearchMovies } from "../../api/movies";
 import { resetMovies, setQuery } from "../../features/movie/movieSearchSlice";
-import { logout, resetAuth } from "../../features/auth/authSlice";
+import { resetAuth } from "../../features/auth/authSlice";
 import ConfirmationModal from "../Modal/ConfirmationModal";
+import { logout } from "../../api/auth";
 interface HeaderProps {
   isOnDetailPage?: boolean;
 }
@@ -33,6 +34,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
     }, 800),
     [dispatch, navigation]
   );
+  
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setQuery(value));
@@ -85,7 +87,7 @@ export default function Header({ isOnDetailPage }: HeaderProps) {
                   onChange={handleSearchChange}
                   className={`${
                     isOnDetailPage ? "bg-gray-500/50" : "bg-slate-500"
-                  } p-1 w-52 md:w-64 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
+                  } pl-2 py-1 w-52 md:w-64 lg:w-56 xl:w-96 text-cyan-50 active:border-none rounded-md`}
                 />
                 {query && (
                   <button
