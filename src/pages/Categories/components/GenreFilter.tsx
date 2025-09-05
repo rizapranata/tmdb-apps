@@ -22,11 +22,11 @@ export default function GenreFilter({
         >
           <input
             type="checkbox"
-            className="form-checkbox h-4 w-4 text-red-300 rounded border-gray-300 bg-gray-400"
+            className="form-checkbox h-4 w-4 text-red-300 rounded-md border-gray-300 bg-gray-400"
             checked={selectedGenres.some((g) => g.id === genre.id)}
             onChange={() => onChange(genre)}
           />
-          <span className="text-white text-sm">{genre.name}</span>
+          <span className="text-gray-400 text-sm">{genre.name}</span>
         </label>
       ))}
     </div>

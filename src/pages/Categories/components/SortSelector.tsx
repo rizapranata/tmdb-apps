@@ -14,7 +14,7 @@ export default function SortSelector({
 }: SortSelectorProps) {
   return (
     <select
-      className={`px-4 py-2 bg-gray-700 text-white rounded ${className}`}
+      className={`px-2 py-2 bg-gray-700 text-white rounded ${className}`}
       value={value}
       onChange={(e) => onChange(e.target.value)}
     >
