@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
 import movieIcon from "../../assets/images/movie-icon.png";
+import coverLogin from "../../assets/images/cover-login.jpg";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
 
@@ -14,7 +15,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   useEffect(() => {
     if (isAuthenticated && account) {
       navigate("/");
@@ -26,8 +27,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="place-content-center min-h-screen bg-zinc-700">
-      <div className="mx-auto content-center max-w-72 py-20 px-6 rounded-md bg-black flex flex-col gap-5">
+    <div
+      className="h-screen w-full bg-contain bg-center bg-gray-700 flex items-center justify-center"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${coverLogin})`,
+      }}
+    >
+      <div className="mx-auto content-center w-72 py-20 px-6 rounded-md bg-secondary flex flex-col gap-5">
         <div className="w-24 mx-auto pb-8">
           <img src={movieIcon} alt="movie-icon" />
         </div>
@@ -66,7 +72,7 @@ const LoginForm = () => {
         )}
         <div className="mt-3">
           <button
-            className="text-gray-400 text-sm"   
+            className="text-gray-400 text-sm"
             onClick={() => navigate("/")}
           >
             Cancel
